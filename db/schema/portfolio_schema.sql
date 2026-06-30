@@ -376,7 +376,7 @@ CREATE TABLE projects_section (
     subheading_ar       VARCHAR(500),
     -- Projects listing page hero
     listing_title_part1_en    VARCHAR(160) DEFAULT "Things I've",
-    listing_title_part1_fr    VARCHAR(160) DEFAULT 'Ce que j\'ai',
+    listing_title_part1_fr    VARCHAR(160) DEFAULT 'Ce que j ai',
     listing_title_part1_ar    VARCHAR(160) DEFAULT 'ما قمت',
     listing_title_part2_en    VARCHAR(160) DEFAULT 'Built',
     listing_title_part2_fr    VARCHAR(160) DEFAULT 'Construit',
