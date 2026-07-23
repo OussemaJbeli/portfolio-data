@@ -4,7 +4,7 @@
 --
 --  This file is GENERATED from the live database created by the
 --  Laravel migrations in portfolio-back/database/migrations.
---  It is the authoritative reference for the 27 CMS tables.
+--  It is the authoritative reference for the 32 CMS tables.
 --  Do not edit by hand — change a migration and re-run, then
 --  regenerate with:
 --    mysqldump --no-data --skip-comments --compact portfolio <tables>
@@ -526,6 +526,88 @@ CREATE TABLE `admin_users` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `admin_users_email_unique` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE `journey_section` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `section_badge_en` varchar(80) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '> GIT LOG --ALL',
+  `section_badge_fr` varchar(80) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '> HISTORIQUE GIT',
+  `section_badge_ar` varchar(80) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '> سجل المسيرة',
+  `heading_en` varchar(160) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'My Journey',
+  `heading_fr` varchar(160) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Mon Parcours',
+  `heading_ar` varchar(160) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'مسيرتي',
+  `subheading_en` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `subheading_fr` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `subheading_ar` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `next_label_en` varchar(160) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'next: AI Platform Engineer',
+  `next_label_fr` varchar(160) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'next: AI Platform Engineer',
+  `next_label_ar` varchar(160) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'next: مهندس منصّات ذكاء اصطناعي',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE `journey_tracks` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `slug` varchar(80) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `branch_name` varchar(120) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` enum('main','education','work','freelance','self') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `color` varchar(7) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `icon_class` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `label_en` varchar(160) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `label_fr` varchar(160) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `label_ar` varchar(160) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `org_en` varchar(160) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `org_fr` varchar(160) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `org_ar` varchar(160) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `started_at` date NOT NULL,
+  `ended_at` date DEFAULT NULL,
+  `lane_index` tinyint unsigned NOT NULL DEFAULT '0',
+  `merges_into_id` bigint unsigned DEFAULT NULL,
+  `merged_at` date DEFAULT NULL,
+  `sort_order` smallint unsigned NOT NULL DEFAULT '0',
+  `is_active` tinyint(1) NOT NULL DEFAULT '1',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `journey_tracks_slug_unique` (`slug`),
+  KEY `journey_tracks_merges_into_id_foreign` (`merges_into_id`),
+  KEY `journey_tracks_is_active_sort_order_index` (`is_active`,`sort_order`),
+  CONSTRAINT `journey_tracks_merges_into_id_foreign` FOREIGN KEY (`merges_into_id`) REFERENCES `journey_tracks` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE `journey_milestones` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `track_id` bigint unsigned NOT NULL,
+  `kind` enum('commit','tag','merge','head') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'commit',
+  `commit_hash` char(7) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `title_en` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `title_fr` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `title_ar` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `body_en` text COLLATE utf8mb4_unicode_ci,
+  `body_fr` text COLLATE utf8mb4_unicode_ci,
+  `body_ar` text COLLATE utf8mb4_unicode_ci,
+  `tag_label` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `happened_at` date NOT NULL,
+  `project_id` bigint unsigned DEFAULT NULL,
+  `link_url` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `is_highlight` tinyint(1) NOT NULL DEFAULT '0',
+  `sort_order` smallint unsigned NOT NULL DEFAULT '0',
+  `is_active` tinyint(1) NOT NULL DEFAULT '1',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `journey_milestones_project_id_foreign` (`project_id`),
+  KEY `journey_milestones_track_id_is_active_sort_order_index` (`track_id`,`is_active`,`sort_order`),
+  KEY `journey_milestones_happened_at_index` (`happened_at`),
+  CONSTRAINT `journey_milestones_project_id_foreign` FOREIGN KEY (`project_id`) REFERENCES `projects` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `journey_milestones_track_id_foreign` FOREIGN KEY (`track_id`) REFERENCES `journey_tracks` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE `journey_milestone_technologies` (
+  `milestone_id` bigint unsigned NOT NULL,
+  `technology_id` bigint unsigned NOT NULL,
+  `sort_order` smallint unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`milestone_id`,`technology_id`),
+  KEY `journey_milestone_technologies_technology_id_foreign` (`technology_id`),
+  CONSTRAINT `journey_milestone_technologies_milestone_id_foreign` FOREIGN KEY (`milestone_id`) REFERENCES `journey_milestones` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `journey_milestone_technologies_technology_id_foreign` FOREIGN KEY (`technology_id`) REFERENCES `technologies` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 SET FOREIGN_KEY_CHECKS = 1;
