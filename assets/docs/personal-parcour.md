@@ -45,7 +45,12 @@
 
 ### Software Development Intern — Leemcode
 **2023 (summer internship)**
-- Software development internship focused on hands-on application development.
+- Software development internship focused on hands-on application development. where i learn the framworks laravel and vue js , and i build a small project for the company using these frameworks. and learn how to work in a team and how to use git and github for version control.
+
+### Software Development Intern — Leemcode
+**2024 (PFA project for getting the Software Engineering license)**
+- full stack dev on AI-Toolbox web app, quick desc for the app 
+-> its like all in one AI toolbox web app, built with Laravel + Vue.js, covering multiple AI tools and utilities. one subscription make user can genrate images, text, and more using AI models. the project was a success and got a good grade.
 
 ---
 
@@ -57,6 +62,7 @@ _Freelancing since 2023 (started during my second year of studies)._
 |---|---|---|---|
 | **Tolab** | Full-stack education platform | Full-stack dev  (laravel, vue, ts , mysql) | `[URL]` |
 | Animated landing pages | Front-end / motion | HTML/CSS/JS animation | `[URL]` |
+| **JK portfolio** | Full-CRUD controlled portfolio with admin doard | Full-stack dev  (laravel, vue, ts , mysql) | jkportfolio.tn |
 | **BoonApp** | Large real-estate platform | Full-stack (laravel, vue, ts , mysql), production | boonapp.tn |
 | **EcoBoxFactory** | Tiny-house product site | Full-stack, production  (laravel, vue, ts , postresql) | ecoboxfactory.com |
 | **Tenja7** | Education platform | Full-stack (laravel, vue, ts , mysql) | tenja7.tn |
